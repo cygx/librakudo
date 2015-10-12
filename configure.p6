@@ -36,7 +36,7 @@ my %defaults =
     slip do given %reconfig<make> // $*VM.config<make> {
         when 'nmake'|'gmake' {
             shell => 'win32',
-            rm    => 'rm-f.bat',
+            rm    => 'build/rm-f.bat',
             mv    => 'move'
         }
         default {
