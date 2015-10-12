@@ -60,7 +60,7 @@ MVM_EMBED_STATIC_INLINE int MoarAPI_load(MoarAPI *api, const char *path) {
 
     api->lib = MVM_embed_dlopen(path);
     if (!api->lib)
-        return -1;
+        return 0;
 
     load = (int (*)(void *, unsigned))MVM_embed_dlsym(
         api->lib, "MVM_embed_load_api");
