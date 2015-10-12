@@ -8,18 +8,21 @@ MV    = <mv>
 PERL6 = perl6
 CLANG = clang
 
-COMPILE     = $(CC) <ccswitch>
-BUILD       = $(CC) <ccout>$@
+COMPILE     = $(CC) <ccoptiflags> <ccswitch>
+BUILD       = $(CC) <ccoptiflags> <ccout>$@
 SYNTAXCHECK = $(CLANG) -std=c90 -fsyntax-only -Werror -Weverything
 NOWARN      = -Wno-padded -Wno-missing-field-initializers
 
 BINARIES  = bin/hotpatch<exe>
 SOURCES   = nqp.c libnqp.c
-OBJECTS   = nqp.o libnqp.o
+OBJECTS   = nqp<obj> libnqp<obj>
+HEADERS   = libnqp.h  moarembed.h
 GENFILES  = libnqp.c
 CONFFILES = Makefile gen.p6
 
-all: bin/hotpatch<exe> libnqp.c
+all: bin/hotpatch<exe> libnqp<obj>
+
+build: $(OBJECTS)
 
 reconfig:
 	$(PERL6) configure.p6 $(CONFIG)
@@ -35,6 +38,13 @@ distclean:
 
 bin/hotpatch<exe>: hotpatch.c
 	$(BUILD) hotpatch.c
+
+.c<obj>: $(HEADERS)
+	$(COMPILE) $*.c
+
+libnqp<obj>: libnqp.c $(HEADERS) bin/hotpatch<exe>
+	$(COMPILE) $*.c
+	bin/hotpatch $@
 
 libnqp.c: libnqp.c.in gen.p6
 	$(PERL6) gen.p6 <libnqp.c.in >$@.tmp
