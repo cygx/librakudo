@@ -1,0 +1,80 @@
+#include "moarembed.h"
+
+#ifdef _WIN32
+#define EXPORT __declspec(dllexport)
+#else
+#define EXPORT
+#endif
+
+EXPORT void libnqp_init(MoarAPI *api, MoarVM *vm);
+EXPORT void libnqp_run(int argc, char **argv);
+
+static const unsigned char nqp[__FILESIZE__(nqp.moarvm)] = {
+    "x<--[__PATH__(nqp.moarvm)|__FILESIZE__(nqp.moarvm)]--"
+};
+static const unsigned char MASTNodes[54609] = {
+    "x<--[__PATH__(MASTNodes.moarvm.)|__FILESIZE__(MASTNodes.moarvm)]--"
+};
+static const unsigned char MASTOps[103629] = {
+    "x<--[__PATH__(MASTOps.moarvm)|__FILESIZE__(MASTOps.moarvm)]--"
+};
+static const unsigned char ModuleLoader[11919] = {
+    "x<--[__PATH__(ModuleLoader.moarvm)|__FILESIZE__(ModuleLoader.moarvm)]--"
+};
+static const unsigned char NQPCORE_setting[48228] = {
+    "x<--[__PATH__(NQPCORE.setting.moarvm)|__FILESIZE__(NQPCORE.setting.moarvm)]--"
+};
+static const unsigned char NQPHLL[337605] = {
+    "x<--[__PATH__(NQPHLL.moarvm)|__FILESIZE__(NQPHLL.moarvm)]--"
+};
+static const unsigned char nqpmo[81113] = {
+    "x<--[__PATH__(nqpmo.moarvm)|__FILESIZE__(nqpmo.moarvm)]--"
+};
+static const unsigned char NQPP5QRegex[246430] = {
+    "x<--[__PATH__(NQPP5QRegex.moarvm)|__FILESIZE__(NQPP5QRegex.moarvm)]--"
+};
+static const unsigned char NQPP6QRegex[403971] = {
+    "x<--[__PATH__(NQPP6QRegex.moarvm)|__FILESIZE__(NQPP6QRegex.moarvm)]--"
+};
+static const unsigned char QAST[456771] = {
+    "x<--[__PATH__(QAST.moarvm)|__FILESIZE__(QAST.moarvm)]--"
+};
+static const unsigned char QASTNode[96662] = {
+    "x<--[__PATH__(QASTNode.moarvm)|__FILESIZE__(QASTNode.moarvm)]--"
+};
+static const unsigned char QRegex[148191] = {
+    "x<--[__PATH__(QRegex.moarvm)|__FILESIZE__(QRegex.moarvm)]--"
+};
+
+void libnqp_init(MoarAPI *api, MoarVM *vm) {
+   api->add_virtual_file(vm, "nqp.moarvm", nqp, sizeof nqp);
+   api->add_virtual_file(vm, "MASTNodes.moarvm", MASTNodes, sizeof MASTNodes);
+   api->add_virtual_file(vm, "MASTOps.moarvm", MASTOps, sizeof MASTOps);
+   api->add_virtual_file(vm, "ModuleLoader.moarvm", ModuleLoader, sizeof ModuleLoader);
+   api->add_virtual_file(vm, "NQPCORE.setting.moarvm", NQPCORE_setting, sizeof NQPCORE_setting);
+   api->add_virtual_file(vm, "NQPHLL.moarvm", NQPHLL, sizeof NQPHLL);
+   api->add_virtual_file(vm, "nqpmo.moarvm", nqpmo, sizeof nqpmo);
+   api->add_virtual_file(vm, "NQPP5QRegex.moarvm", NQPP5QRegex, sizeof NQPP5QRegex);
+   api->add_virtual_file(vm, "NQPP6QRegex.moarvm", NQPP6QRegex, sizeof NQPP6QRegex);
+   api->add_virtual_file(vm, "QAST.moarvm", QAST, sizeof QAST);
+   api->add_virtual_file(vm, "QASTNode.moarvm", QASTNode, sizeof QASTNode);
+   api->add_virtual_file(vm, "QRegex.moarvm", QRegex, sizeof QRegex);
+}
+
+void libnqp_run(int argc, char **argv) {
+    MoarAPI api;
+    MoarVM *vm;
+
+    MoarAPI_load(&api, __MOARDLL__);
+    if(api.version < 1)
+        return;
+
+    vm = api.create();
+    libnqp_init(&api, vm);
+
+    api.set_clargs(vm, argc - 1, argv + 1);
+    api.set_exec_name(vm, argv[0]);
+    api.set_prog_name(vm, "nqp");
+    api.run_file(vm, "nqp.moarvm");
+    api.exit(vm);
+}

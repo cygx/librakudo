@@ -1,0 +1,19 @@
+NQPDIR  = <nqpdir>
+MOARDLL = <libdir>/<moardll>
+
+SHELL = <shell>
+CC    = <cc>
+RM    = <rm>
+
+.SHELLFLAGS = <shellflags>
+COMPILE     = $(CC) <ccswitch>
+BUILD       = $(CC) <ccout>$@
+
+bin/hotpatch<exe>: hotpatch.c
+	$(BUILD) hotpatch.c
+
+sanitycheck: bin/hotpatch$(EXE)
+	bin/hotpatch t/hp-noop.txt
+	bin/hotpatch t/hp-ok.txt
+	-bin/hotpatch t/hp-fail.txt
+	@echo ok.

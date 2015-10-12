@@ -1,0 +1,5 @@
+__*
+*.[oa]
+Makefile
+libnqp.c
+gen.p6
