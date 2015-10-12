@@ -19,7 +19,7 @@ LINK_SHARED = $(LD) <ldout>$@ <ldshared>
 SYNTAXCHECK = $(CLANG) -std=c90 -fsyntax-only -Werror -Weverything
 NOWARN      = -Wno-padded -Wno-missing-field-initializers
 
-BINARIES  = bin/hotpatch<exe> $(NQPDLL)
+BINARIES  = bin/hotpatch<exe> $(NQPEXE) $(NQPDLL)
 SOURCES   = nqp.c libnqp.c
 OBJECTS   = nqp<obj> libnqp<obj> $(NQPIMP)
 HEADERS   = libnqp.h  moarembed.h
