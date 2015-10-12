@@ -1,3 +1,5 @@
+/* TODO: error handling! */
+
 #include "moarembed.h"
 
 #ifdef _WIN32
@@ -62,10 +64,14 @@ void libnqp_init(MoarAPI *api, MoarVM *vm) {
 }
 
 void libnqp_run(int argc, char **argv) {
+    const char *dllpath;
     MoarAPI api;
     MoarVM *vm;
 
-    MoarAPI_load(&api, "__MOARDLL__");
+    if((dllpath = getenv("MOARDLL")) == NULL)
+        dllpath = "__MOARDLL__";
+
+    MoarAPI_load(&api, dllpath);
     if(api.version < 1)
         return;
 
