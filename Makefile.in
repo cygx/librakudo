@@ -1,19 +1,51 @@
 NQPDIR  = <nqpdir>
 MOARDLL = <libdir>/<moardll>
+CONFIG  = <libnqpconf>
 
-SHELL = <shell>
 CC    = <cc>
 RM    = <rm>
+MV    = <mv>
+PERL6 = perl6
+CLANG = clang
 
-.SHELLFLAGS = <shellflags>
 COMPILE     = $(CC) <ccswitch>
 BUILD       = $(CC) <ccout>$@
+SYNTAXCHECK = $(CLANG) -std=c90 -fsyntax-only -Werror -Weverything
+NOWARN      = -Wno-padded -Wno-missing-field-initializers
+
+BINARIES  = bin/hotpatch<exe>
+SOURCES   = nqp.c libnqp.c
+OBJECTS   = nqp.o libnqp.o
+GENFILES  = libnqp.c
+CONFFILES = Makefile gen.p6
+
+all: bin/hotpatch<exe> libnqp.c
+
+reconfig:
+	$(PERL6) configure.p6 $(CONFIG)
+
+clean:
+	$(RM) $(OBJECTS)
+
+realclean:
+	$(RM) $(OBJECTS) $(BINARIES) $(GENFILES)
+
+distclean:
+	$(RM) $(OBJECTS) $(BINARIES) $(GENFILES) $(CONFFILES)
 
 bin/hotpatch<exe>: hotpatch.c
 	$(BUILD) hotpatch.c
 
-sanitycheck: bin/hotpatch$(EXE)
+libnqp.c: libnqp.c.in gen.p6
+	$(PERL6) gen.p6 <libnqp.c.in >$@.tmp
+	$(MV) $@.tmp $@
+
+hpcheck: bin/hotpatch<exe>
 	bin/hotpatch t/hp-noop.txt
 	bin/hotpatch t/hp-ok.txt
 	-bin/hotpatch t/hp-fail.txt
-	@echo ok.
+	@echo -- ok.
+
+syntaxcheck: $(SOURCES)
+	$(SYNTAXCHECK) hotpatch.c
+	$(SYNTAXCHECK) $(NOWARN) $(SOURCES)

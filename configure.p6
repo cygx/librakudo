@@ -1,4 +1,5 @@
-unit sub MAIN(Str:D $nqpdir, *%reconfig);
+use v6;
+unit sub MAIN(Str:D $nqpdir is copy, *%reconfig);
 
 constant GENSCRIPT = q:to/END-OF-SCRIPT/;
     print $*IN.slurp-rest.subst: :g, /__(\w+)__[\((<-[\)]>+)\)]?/, -> $/ {
@@ -19,21 +20,37 @@ constant GENSCRIPT = q:to/END-OF-SCRIPT/;
 
 constant WIN32 = $*DISTRO.is-win;
 
-my %defaults = WIN32
-    ?? (rm         => 'rm-f.bat',
-        shell      => 'cmd',
-        shellflags => '/C')
-    !! (rm         => 'rm -f',
-        shell      => 'sh'.
-        shellflags => '-c');
+if @*ARGS.grep(/\s/) {
+    note 'SORRY: Arguments that contain whitespace break the build system...';
+    exit 1;
+}
 
-my %config = %($*VM.config), %defaults, %reconfig, :$nqpdir;
+$nqpdir ~~ s/<[\\\/]>$//;
 
+# do we need better shell detection?
+my %defaults = do given %reconfig<make> // $*VM.config<make> {
+    when 'nmake'|'gmake' {
+        shell => 'win32',
+        rm    => 'rm-f.bat',
+        mv    => 'move'
+    }
+    default {
+        shell => 'posix',
+        rm    => 'rm -f',
+        mv    => 'mv'
+    }
+}
+
+my %config = %($*VM.config), %defaults, %reconfig,
+    :$nqpdir, :libnqpconf(@*ARGS.join(' '));
+
+# normalize backslashes to forward slashes
 my &get-value = WIN32
     ?? -> $/ { %config{~$0}.?subst(:g, '\\', '/') // ~$/ }
     !! -> $/ { %config{~$0} // ~$/ }
 
-my &fix-command = WIN32
+# undo slash normalization for commands when using nmake
+my &fix-command = %config<make> eq 'nmake'
     ?? { .subst(:g, '/', '\\') }
     !! *.self;
 

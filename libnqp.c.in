@@ -12,37 +12,37 @@ EXPORT void libnqp_run(int argc, char **argv);
 static const unsigned char nqp[__FILESIZE__(nqp.moarvm)] = {
     "x<--[__PATH__(nqp.moarvm)|__FILESIZE__(nqp.moarvm)]--"
 };
-static const unsigned char MASTNodes[54609] = {
-    "x<--[__PATH__(MASTNodes.moarvm.)|__FILESIZE__(MASTNodes.moarvm)]--"
+static const unsigned char MASTNodes[__FILESIZE__(MASTNodes.moarvm)] = {
+    "x<--[__PATH__(MASTNodes.moarvm)|__FILESIZE__(MASTNodes.moarvm)]--"
 };
-static const unsigned char MASTOps[103629] = {
+static const unsigned char MASTOps[__FILESIZE__(MASTOps.moarvm)] = {
     "x<--[__PATH__(MASTOps.moarvm)|__FILESIZE__(MASTOps.moarvm)]--"
 };
-static const unsigned char ModuleLoader[11919] = {
+static const unsigned char ModuleLoader[__FILESIZE__(ModuleLoader.moarvm)] = {
     "x<--[__PATH__(ModuleLoader.moarvm)|__FILESIZE__(ModuleLoader.moarvm)]--"
 };
-static const unsigned char NQPCORE_setting[48228] = {
+static const unsigned char NQPCORE_setting[__FILESIZE__(NQPCORE.setting.moarvm)] = {
     "x<--[__PATH__(NQPCORE.setting.moarvm)|__FILESIZE__(NQPCORE.setting.moarvm)]--"
 };
-static const unsigned char NQPHLL[337605] = {
+static const unsigned char NQPHLL[__FILESIZE__(NQPHLL.moarvm)] = {
     "x<--[__PATH__(NQPHLL.moarvm)|__FILESIZE__(NQPHLL.moarvm)]--"
 };
-static const unsigned char nqpmo[81113] = {
+static const unsigned char nqpmo[__FILESIZE__(nqpmo.moarvm)] = {
     "x<--[__PATH__(nqpmo.moarvm)|__FILESIZE__(nqpmo.moarvm)]--"
 };
-static const unsigned char NQPP5QRegex[246430] = {
+static const unsigned char NQPP5QRegex[__FILESIZE__(NQPP5QRegex.moarvm)] = {
     "x<--[__PATH__(NQPP5QRegex.moarvm)|__FILESIZE__(NQPP5QRegex.moarvm)]--"
 };
-static const unsigned char NQPP6QRegex[403971] = {
+static const unsigned char NQPP6QRegex[__FILESIZE__(NQPP6QRegex.moarvm)] = {
     "x<--[__PATH__(NQPP6QRegex.moarvm)|__FILESIZE__(NQPP6QRegex.moarvm)]--"
 };
-static const unsigned char QAST[456771] = {
+static const unsigned char QAST[__FILESIZE__(QAST.moarvm)] = {
     "x<--[__PATH__(QAST.moarvm)|__FILESIZE__(QAST.moarvm)]--"
 };
-static const unsigned char QASTNode[96662] = {
+static const unsigned char QASTNode[__FILESIZE__(QASTNode.moarvm)] = {
     "x<--[__PATH__(QASTNode.moarvm)|__FILESIZE__(QASTNode.moarvm)]--"
 };
-static const unsigned char QRegex[148191] = {
+static const unsigned char QRegex[__FILESIZE__(QRegex.moarvm)] = {
     "x<--[__PATH__(QRegex.moarvm)|__FILESIZE__(QRegex.moarvm)]--"
 };
 
@@ -65,7 +65,7 @@ void libnqp_run(int argc, char **argv) {
     MoarAPI api;
     MoarVM *vm;
 
-    MoarAPI_load(&api, __MOARDLL__);
+    MoarAPI_load(&api, "__MOARDLL__");
     if(api.version < 1)
         return;
 

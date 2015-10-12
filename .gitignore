@@ -1,5 +1,6 @@
 __*
 *.[oa]
+*.tmp
 Makefile
 libnqp.c
 gen.p6
