@@ -28,18 +28,23 @@ if @*ARGS.grep(/\s/) {
 $nqpdir ~~ s/<[\\\/]>$//;
 
 # do we need better shell detection?
-my %defaults = do given %reconfig<make> // $*VM.config<make> {
-    when 'nmake'|'gmake' {
-        shell => 'win32',
-        rm    => 'rm-f.bat',
-        mv    => 'move'
+my %defaults =
+    perl6     => 'perl6',
+    clang     => 'clang',
+    nqpdll    => 'nqp.dll',
+    nqpimplib => sprintf($*VM.config<lib>, 'nqp.dll'),
+    slip do given %reconfig<make> // $*VM.config<make> {
+        when 'nmake'|'gmake' {
+            shell => 'win32',
+            rm    => 'rm-f.bat',
+            mv    => 'move'
+        }
+        default {
+            shell => 'posix',
+            rm    => 'rm -f',
+            mv    => 'mv'
+        }
     }
-    default {
-        shell => 'posix',
-        rm    => 'rm -f',
-        mv    => 'mv'
-    }
-}
 
 my %config = %($*VM.config), %defaults, %reconfig,
     :$nqpdir, :libnqpconf(@*ARGS.join(' '));
@@ -54,7 +59,7 @@ my &fix-command = %config<make> eq 'nmake'
     ?? { .subst(:g, '/', '\\') }
     !! *.self;
 
-spurt 'Makefile', slurp('Makefile.in')
+spurt 'Makefile', slurp('build/Makefile.in')
     . subst(:g, /\<(\w+)\>/, &get-value)
     . subst(:g, /\t\S+/, &fix-command);
 
@@ -64,7 +69,8 @@ spurt 'gen.p6', GENSCRIPT.subst: :g, / '#`<' (\w+) '>' /, -> $/ {
             $nqpdir.subst(:g, '\\', '/').perl
         }
         when 'dllpath' {
-            "{%config<libdir>}/{%config<moardll>}".subst(:g, '\\', '/').perl
+            my $path = %config<dllpath> // "{%config<libdir>}/{%config<moardll>}";
+            $path.subst(:g, '\\', '/').perl
         }
     }
 }

@@ -1,31 +1,35 @@
-NQPDIR  = <nqpdir>
-MOARDLL = <libdir>/<moardll>
-CONFIG  = <libnqpconf>
+CONFIG = <libnqpconf>
+
+NQPDIR = <nqpdir>
+NQPEXE = bin/nqp<exe>
+NQPDLL = bin/<nqpdll>
+NQPIMP = <nqpimplib>
 
 CC    = <cc>
+LD    = <ld>
 RM    = <rm>
 MV    = <mv>
-PERL6 = perl6
-CLANG = clang
+PERL6 = <perl6>
+CLANG = <clang>
 
 COMPILE     = $(CC) <ccoptiflags> <ccswitch>
 BUILD       = $(CC) <ccoptiflags> <ccout>$@
+LINK        = $(LD) <ldout>$@
+LINK_SHARED = $(LD) <ldout>$@ <ldshared>
 SYNTAXCHECK = $(CLANG) -std=c90 -fsyntax-only -Werror -Weverything
 NOWARN      = -Wno-padded -Wno-missing-field-initializers
 
-BINARIES  = bin/hotpatch<exe>
+BINARIES  = bin/hotpatch<exe> $(NQPDLL)
 SOURCES   = nqp.c libnqp.c
-OBJECTS   = nqp<obj> libnqp<obj>
+OBJECTS   = nqp<obj> libnqp<obj> $(NQPIMP)
 HEADERS   = libnqp.h  moarembed.h
 GENFILES  = libnqp.c
 CONFFILES = Makefile gen.p6
 
-all: bin/hotpatch<exe> libnqp<obj>
-
-build: $(OBJECTS)
+build: $(NQPEXE)
 
 reconfig:
-	$(PERL6) configure.p6 $(CONFIG)
+	$(PERL6) configure.p6 $(CONFIG) $(ADDCONFIG)
 
 clean:
 	$(RM) $(OBJECTS)
@@ -36,9 +40,18 @@ realclean:
 distclean:
 	$(RM) $(OBJECTS) $(BINARIES) $(GENFILES) $(CONFFILES)
 
-bin/hotpatch<exe>: hotpatch.c
-	$(BUILD) hotpatch.c
+bin/hotpatch<exe>: build/hotpatch.c
+	$(BUILD) build/hotpatch.c
 
+$(NQPEXE): nqp<obj> $(NQPDLL) $(NQPIMP)
+	$(LINK) nqp<obj> $(NQPIMP)
+
+$(NQPDLL): libnqp<obj>
+	$(LINK_SHARED) libnqp<obj>
+
+$(NQPIMP): $(NQPDLL)
+
+.SUFFIXES: .c .o
 .c<obj>: $(HEADERS)
 	$(COMPILE) $*.c
 
@@ -57,5 +70,5 @@ hpcheck: bin/hotpatch<exe>
 	@echo -- ok.
 
 syntaxcheck: $(SOURCES)
-	$(SYNTAXCHECK) hotpatch.c
+	$(SYNTAXCHECK) build/hotpatch.c
 	$(SYNTAXCHECK) $(NOWARN) $(SOURCES)
