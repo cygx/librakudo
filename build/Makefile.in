@@ -22,7 +22,7 @@ NOWARN      = -Wno-padded -Wno-missing-field-initializers
 BINARIES  = bin/hotpatch<exe> $(NQPEXE) $(NQPDLL)
 SOURCES   = nqp.c libnqp.c
 OBJECTS   = nqp<obj> libnqp<obj> $(NQPIMP)
-HEADERS   = libnqp.h  moarembed.h
+HEADERS   = moarembed.h libnqp.h
 GENFILES  = libnqp.c
 CONFFILES = Makefile gen.p6
 
@@ -51,16 +51,21 @@ $(NQPDLL): libnqp<obj>
 
 $(NQPIMP): $(NQPDLL)
 
-.SUFFIXES: .c .o
-.c<obj>: $(HEADERS)
+.SUFFIXES: .c .o .cin
+
+nqp<obj>: nqp.c $(HEADERS)
 	$(COMPILE) $*.c
 
-libnqp<obj>: libnqp.c $(HEADERS) bin/hotpatch<exe>
-	$(COMPILE) $*.c
-	bin/hotpatch $@
+$(OBJECTS): $(HEADERS) bin/hotpatch<exe>
+$(GENFILES): gen.p6
 
-libnqp.c: libnqp.c.in gen.p6
-	$(PERL6) gen.p6 <libnqp.c.in >$@.tmp
+.c<obj>:
+	$(COMPILE) <ccout>$@.tmp $*.c
+	bin/hotpatch $@.tmp
+	$(MV) $@.tmp $@
+
+.cin.c:
+	$(PERL6) gen.p6 <$*.cin >$@.tmp
 	$(MV) $@.tmp $@
 
 hpcheck: bin/hotpatch<exe>
