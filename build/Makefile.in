@@ -5,6 +5,11 @@ NQPEXE = bin/nqp<exe>
 NQPDLL = bin/<nqpdll>
 NQPIMP = <nqpimplib>
 
+RAKDIR = <rakudodir>
+RAKEXE = bin/rakudo<exe>
+RAKDLL = bin/<rakudodll>
+RAKIMP = <rakudoimplib>
+
 CC    = <cc>
 LD    = <ld>
 RM    = <rm>
@@ -19,17 +24,17 @@ LINK_SHARED = $(LD) <ldout>$@ <ldshared>
 SYNTAXCHECK = $(CLANG) -std=c90 -fsyntax-only -Werror -Weverything
 NOWARN      = -Wno-padded -Wno-missing-field-initializers
 
-BINARIES  = bin/hotpatch<exe> $(NQPEXE) $(NQPDLL)
-SOURCES   = nqp.c libnqp.c
-OBJECTS   = nqp<obj> libnqp<obj> $(NQPIMP)
-HEADERS   = moarembed.h libnqp.h
-GENFILES  = libnqp.c
+BINARIES  = bin/hotpatch<exe> $(NQPEXE) $(NQPDLL) $(RAKEXE) $(RAKDLL)
+SOURCES   = nqp.c libnqp.c rakudo.c librakudo.c
+OBJECTS   = nqp<obj> libnqp<obj> librakudo<obj> $(NQPIMP) ($RAKIMP)
+HEADERS   = moarembed.h libnqp.h librakudo.h
+GENFILES  = libnqp.c librakudo.c
 CONFFILES = Makefile gen.p6
 
-build: $(NQPEXE)
+build: $(NQPEXE) $(RAKEXE)
 
 reconfig:
-	$(PERL6) configure.p6 $(CONFIG) $(ADDCONFIG)
+	$(PERL6) configure.p6 $(CONFIG)
 
 clean:
 	$(RM) $(OBJECTS)
@@ -50,6 +55,14 @@ $(NQPDLL): libnqp<obj>
 	$(LINK_SHARED) libnqp<obj>
 
 $(NQPIMP): $(NQPDLL)
+
+$(RAKEXE): rakudo<obj> $(RAKDLL) $(RAKIMP)
+	$(LINK) rakudo<obj> $(RAKIMP)
+
+$(RAKDLL): librakudo<obj>
+	$(LINK_SHARED) librakudo<obj>
+
+$(RAKIMP): $(RAKDLL)
 
 .SUFFIXES: .c .o .cin
 

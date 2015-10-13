@@ -1,10 +1,14 @@
 use v6;
-unit sub MAIN(Str:D $nqpdir is copy, *%reconfig);
+unit sub MAIN(
+    Str:D :$nqpdir! is copy,
+    Str:D :$rakudodir! is copy,
+    *%reconfig);
 
 constant GENSCRIPT = q:to/END-OF-SCRIPT/;
     print $*IN.slurp-rest.subst: :g, /__(\w+)__[\((<-[\)]>+)\)]?/, -> $/ {
         given $0 {
-            when 'MOARDLL' { #`<dllpath> }
+            when 'MOARDLL' { #`<moardllpath> }
+            when 'NQPDLL' { #`<nqpdllpath> }
             when 'PATH' { #`<nqpdir> ~ "/$1" }
             when 'FILESIZE' {
                 my $file = #`<nqpdir> ~ "/$1";
@@ -25,14 +29,17 @@ if @*ARGS.grep(/\s/) {
     exit 1;
 }
 
-$nqpdir ~~ s/<[\\\/]>$//;
+$nqpdir    ~~ s/<[\\\/]>$//;
+$rakudodir ~~ s/<[\\\/]>$//;
 
 # do we need better shell detection?
 my %defaults =
-    perl6     => 'perl6',
-    clang     => 'clang',
+    perl6 => 'perl6',
+    clang => 'clang',
+
     nqpdll    => 'nqp.dll',
-    nqpimplib => sprintf($*VM.config<lib>, 'nqp.dll'),
+    rakudodll => 'rakudo.dll',
+
     slip do given %reconfig<make> // $*VM.config<make> {
         when 'nmake'|'gmake' {
             shell => 'win32',
@@ -47,7 +54,12 @@ my %defaults =
     }
 
 my %config = %($*VM.config), %defaults, %reconfig,
-    :$nqpdir, :libnqpconf(@*ARGS.join(' '));
+    :$nqpdir, :$rakudodir, :libnqpconf(@*ARGS.join(' '));
+
+%config<nqpimplib>    //= sprintf %config<lib>, %config<nqpdll>;
+%config<rakudoimplib> //= sprintf %config<lib>, %config<rakudodll>;
+%config<moardllpath>  //= "{%config<libdir>}/{%config<moardll>}";
+%config<nqpdllpath>   //= "{%config<libdir>}/{%config<nqpdll>}";
 
 # normalize backslashes to forward slashes
 my &get-value = WIN32
@@ -65,12 +77,8 @@ spurt 'Makefile', slurp('build/Makefile.in')
 
 spurt 'gen.p6', GENSCRIPT.subst: :g, / '#`<' (\w+) '>' /, -> $/ {
     given $0 {
-        when 'nqpdir' {
-            $nqpdir.subst(:g, '\\', '/').perl
-        }
-        when 'dllpath' {
-            my $path = %config<dllpath> // "{%config<libdir>}/{%config<moardll>}";
-            $path.subst(:g, '\\', '/').perl
+        when any <nqpdir moardllpath nqpdllpath> {
+            %config{$_}.subst(:g, '\\', '/').perl
         }
     }
 }

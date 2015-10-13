@@ -64,14 +64,14 @@ void libnqp_init(MoarAPI *api, MoarVM *vm) {
 }
 
 void libnqp_run(int argc, char **argv) {
-    const char *dllpath;
+    const char *moardll;
     MoarAPI api;
     MoarVM *vm;
 
-    if((dllpath = getenv("MOARDLL")) == NULL)
-        dllpath = "__MOARDLL__";
+    if((moardll = getenv("MOARDLL")) == NULL)
+        moardll = "__MOARDLL__";
 
-    MoarAPI_load(&api, dllpath);
+    MoarAPI_load(&api, moardll);
     if(api.version < 1)
         return;
 
