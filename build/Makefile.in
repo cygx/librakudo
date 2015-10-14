@@ -58,15 +58,11 @@ $(NQPEXE): nqp<obj> $(NQPDLL) $(NQPIMP)
 $(NQPDLL): libnqp<obj>
 	$(LINK_SHARED) libnqp<obj>
 
-$(NQPIMP): $(NQPDLL)
-
 $(RAKEXE): rakudo<obj> $(RAKDLL) $(RAKIMP)
 	$(LINK) rakudo<obj> $(RAKIMP)
 
 $(RAKDLL): librakudo<obj>
 	$(LINK_SHARED) librakudo<obj>
-
-$(RAKIMP): $(RAKDLL)
 
 .SUFFIXES: .c .o .cin
 

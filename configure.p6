@@ -48,9 +48,6 @@ my %defaults =
     perl6 => 'perl6',
     clang => 'clang',
 
-    nqpdll    => 'nqp.dll',
-    rakudodll => 'rakudo.dll',
-
     slip do given %reconfig<make> // $*VM.config<make> {
         when 'nmake'|'gmake' {
             shell => 'win32',
@@ -67,6 +64,8 @@ my %defaults =
 my %config = %($*VM.config), %defaults, %reconfig,
     :$nqpdir, :$rakudodir, :libnqpconf(@*ARGS.join(' '));
 
+%config<nqpdll>       //= sprintf %config<dll>, 'nqp';
+%config<rakudodll>    //= sprintf %config<dll>, 'rakudo';
 %config<nqpimplib>    //= sprintf %config<lib>, %config<nqpdll>;
 %config<rakudoimplib> //= sprintf %config<lib>, %config<rakudodll>;
 %config<moardllpath>  //= "{%config<libdir>}/{%config<moardll>}";
