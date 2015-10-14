@@ -33,6 +33,10 @@ CONFFILES = Makefile gen.p6
 
 build: $(NQPEXE) $(RAKEXE)
 
+rebuild:
+	$(RM) $(GENFILES)
+	$(MAKE) build
+
 reconfig:
 	$(PERL6) configure.p6 $(CONFIG)
 
