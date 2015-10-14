@@ -11,41 +11,41 @@
 EXPORT void libnqp_init(MoarAPI *api, MoarVM *vm);
 EXPORT void libnqp_run(int argc, char **argv);
 
-static const unsigned char nqp[__FILESIZE__(nqp.moarvm)] = {
-    "x<--[__PATH__(nqp.moarvm)|__FILESIZE__(nqp.moarvm)]--"
+static const unsigned char nqp[__FILESIZE__(__NQPDIR__/nqp.moarvm)] = {
+    "x<--[__NQPDIR__/nqp.moarvm|__FILESIZE__(__NQPDIR__/nqp.moarvm)]--"
 };
-static const unsigned char MASTNodes[__FILESIZE__(MASTNodes.moarvm)] = {
-    "x<--[__PATH__(MASTNodes.moarvm)|__FILESIZE__(MASTNodes.moarvm)]--"
+static const unsigned char NQPCORE_setting[__FILESIZE__(__NQPDIR__/NQPCORE.setting.moarvm)] = {
+    "x<--[__NQPDIR__/NQPCORE.setting.moarvm|__FILESIZE__(__NQPDIR__/NQPCORE.setting.moarvm)]--"
 };
-static const unsigned char MASTOps[__FILESIZE__(MASTOps.moarvm)] = {
-    "x<--[__PATH__(MASTOps.moarvm)|__FILESIZE__(MASTOps.moarvm)]--"
+static const unsigned char MASTNodes[__FILESIZE__(__NQPDIR__/MASTNodes.moarvm)] = {
+    "x<--[__NQPDIR__/MASTNodes.moarvm|__FILESIZE__(__NQPDIR__/MASTNodes.moarvm)]--"
 };
-static const unsigned char ModuleLoader[__FILESIZE__(ModuleLoader.moarvm)] = {
-    "x<--[__PATH__(ModuleLoader.moarvm)|__FILESIZE__(ModuleLoader.moarvm)]--"
+static const unsigned char MASTOps[__FILESIZE__(__NQPDIR__/MASTOps.moarvm)] = {
+    "x<--[__NQPDIR__/MASTOps.moarvm|__FILESIZE__(__NQPDIR__/MASTOps.moarvm)]--"
 };
-static const unsigned char NQPCORE_setting[__FILESIZE__(NQPCORE.setting.moarvm)] = {
-    "x<--[__PATH__(NQPCORE.setting.moarvm)|__FILESIZE__(NQPCORE.setting.moarvm)]--"
+static const unsigned char ModuleLoader[__FILESIZE__(__NQPDIR__/ModuleLoader.moarvm)] = {
+    "x<--[__NQPDIR__/ModuleLoader.moarvm|__FILESIZE__(__NQPDIR__/ModuleLoader.moarvm)]--"
 };
-static const unsigned char NQPHLL[__FILESIZE__(NQPHLL.moarvm)] = {
-    "x<--[__PATH__(NQPHLL.moarvm)|__FILESIZE__(NQPHLL.moarvm)]--"
+static const unsigned char NQPHLL[__FILESIZE__(__NQPDIR__/NQPHLL.moarvm)] = {
+    "x<--[__NQPDIR__/NQPHLL.moarvm|__FILESIZE__(__NQPDIR__/NQPHLL.moarvm)]--"
 };
-static const unsigned char nqpmo[__FILESIZE__(nqpmo.moarvm)] = {
-    "x<--[__PATH__(nqpmo.moarvm)|__FILESIZE__(nqpmo.moarvm)]--"
+static const unsigned char nqpmo[__FILESIZE__(__NQPDIR__/nqpmo.moarvm)] = {
+    "x<--[__NQPDIR__/nqpmo.moarvm|__FILESIZE__(__NQPDIR__/nqpmo.moarvm)]--"
 };
-static const unsigned char NQPP5QRegex[__FILESIZE__(NQPP5QRegex.moarvm)] = {
-    "x<--[__PATH__(NQPP5QRegex.moarvm)|__FILESIZE__(NQPP5QRegex.moarvm)]--"
+static const unsigned char NQPP5QRegex[__FILESIZE__(__NQPDIR__/NQPP5QRegex.moarvm)] = {
+    "x<--[__NQPDIR__/NQPP5QRegex.moarvm|__FILESIZE__(__NQPDIR__/NQPP5QRegex.moarvm)]--"
 };
-static const unsigned char NQPP6QRegex[__FILESIZE__(NQPP6QRegex.moarvm)] = {
-    "x<--[__PATH__(NQPP6QRegex.moarvm)|__FILESIZE__(NQPP6QRegex.moarvm)]--"
+static const unsigned char NQPP6QRegex[__FILESIZE__(__NQPDIR__/NQPP6QRegex.moarvm)] = {
+    "x<--[__NQPDIR__/NQPP6QRegex.moarvm|__FILESIZE__(__NQPDIR__/NQPP6QRegex.moarvm)]--"
 };
-static const unsigned char QAST[__FILESIZE__(QAST.moarvm)] = {
-    "x<--[__PATH__(QAST.moarvm)|__FILESIZE__(QAST.moarvm)]--"
+static const unsigned char QAST[__FILESIZE__(__NQPDIR__/QAST.moarvm)] = {
+    "x<--[__NQPDIR__/QAST.moarvm|__FILESIZE__(__NQPDIR__/QAST.moarvm)]--"
 };
-static const unsigned char QASTNode[__FILESIZE__(QASTNode.moarvm)] = {
-    "x<--[__PATH__(QASTNode.moarvm)|__FILESIZE__(QASTNode.moarvm)]--"
+static const unsigned char QASTNode[__FILESIZE__(__NQPDIR__/QASTNode.moarvm)] = {
+    "x<--[__NQPDIR__/QASTNode.moarvm|__FILESIZE__(__NQPDIR__/QASTNode.moarvm)]--"
 };
-static const unsigned char QRegex[__FILESIZE__(QRegex.moarvm)] = {
-    "x<--[__PATH__(QRegex.moarvm)|__FILESIZE__(QRegex.moarvm)]--"
+static const unsigned char QRegex[__FILESIZE__(__NQPDIR__/QRegex.moarvm)] = {
+    "x<--[__NQPDIR__/QRegex.moarvm|__FILESIZE__(__NQPDIR__/QRegex.moarvm)]--"
 };
 
 void libnqp_init(MoarAPI *api, MoarVM *vm) {

@@ -26,7 +26,7 @@ NOWARN      = -Wno-padded -Wno-missing-field-initializers
 
 BINARIES  = bin/hotpatch<exe> $(NQPEXE) $(NQPDLL) $(RAKEXE) $(RAKDLL)
 SOURCES   = nqp.c libnqp.c rakudo.c librakudo.c
-OBJECTS   = nqp<obj> libnqp<obj> librakudo<obj> $(NQPIMP) ($RAKIMP)
+OBJECTS   = nqp<obj> libnqp<obj> librakudo<obj> $(NQPIMP) $(RAKIMP)
 HEADERS   = moarembed.h libnqp.h librakudo.h
 GENFILES  = libnqp.c librakudo.c
 CONFFILES = Makefile gen.p6

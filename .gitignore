@@ -2,5 +2,6 @@ __*
 *.[oa]
 *.tmp
 Makefile
-libnqp.c
 gen.p6
+libnqp.c
+librakudo.c

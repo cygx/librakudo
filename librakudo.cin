@@ -11,17 +11,64 @@
 EXPORT void librakudo_init(MoarAPI *api, MoarVM *vm);
 EXPORT void librakudo_run(int argc, char **argv);
 
-#if 0
-static const unsigned char nqp[] = {
-    "x<--[|]--"
+static const unsigned char perl6[__FILESIZE__(__RAKUDODIR__/perl6.moarvm)] = {
+    "x<--[__RAKUDODIR__/perl6.moarvm|__FILESIZE__(__RAKUDODIR__/perl6.moarvm)]--"
 };
-#endif
+static const unsigned char perl6_debug[__FILESIZE__(__RAKUDODIR__/perl6-debug.moarvm)] = {
+    "x<--[__RAKUDODIR__/perl6-debug.moarvm|__FILESIZE__(__RAKUDODIR__/perl6-debug.moarvm)]--"
+};
+static const unsigned char CORE_setting[__FILESIZE__(__RAKUDODIR__/CORE.setting.moarvm)] = {
+    "x<--[__RAKUDODIR__/CORE.setting.moarvm|__FILESIZE__(__RAKUDODIR__/CORE.setting.moarvm)]--"
+};
+static const unsigned char RESTRICTED_setting[__FILESIZE__(__RAKUDODIR__/RESTRICTED.setting.moarvm)] = {
+    "x<--[__RAKUDODIR__/RESTRICTED.setting.moarvm|__FILESIZE__(__RAKUDODIR__/RESTRICTED.setting.moarvm)]--"
+};
+static const unsigned char Perl6_Actions[__FILESIZE__(__RAKUDODIR__/blib/Perl6/Actions.moarvm)] = {
+    "x<--[__RAKUDODIR__/blib/Perl6/Actions.moarvm|__FILESIZE__(__RAKUDODIR__/blib/Perl6/Actions.moarvm)]--"
+};
+static const unsigned char Perl6_BOOTSTRAP[__FILESIZE__(__RAKUDODIR__/blib/Perl6/BOOTSTRAP.moarvm)] = {
+    "x<--[__RAKUDODIR__/blib/Perl6/BOOTSTRAP.moarvm|__FILESIZE__(__RAKUDODIR__/blib/Perl6/BOOTSTRAP.moarvm)]--"
+};
+static const unsigned char Perl6_Compiler[__FILESIZE__(__RAKUDODIR__/blib/Perl6/Compiler.moarvm)] = {
+    "x<--[__RAKUDODIR__/blib/Perl6/Compiler.moarvm|__FILESIZE__(__RAKUDODIR__/blib/Perl6/Compiler.moarvm)]--"
+};
+static const unsigned char Perl6_Grammar[__FILESIZE__(__RAKUDODIR__/blib/Perl6/Grammar.moarvm)] = {
+    "x<--[__RAKUDODIR__/blib/Perl6/Grammar.moarvm|__FILESIZE__(__RAKUDODIR__/blib/Perl6/Grammar.moarvm)]--"
+};
+static const unsigned char Perl6_Metamodel[__FILESIZE__(__RAKUDODIR__/blib/Perl6/Metamodel.moarvm)] = {
+    "x<--[__RAKUDODIR__/blib/Perl6/Metamodel.moarvm|__FILESIZE__(__RAKUDODIR__/blib/Perl6/Metamodel.moarvm)]--"
+};
+static const unsigned char Perl6_ModuleLoader[__FILESIZE__(__RAKUDODIR__/blib/Perl6/ModuleLoader.moarvm)] = {
+    "x<--[__RAKUDODIR__/blib/Perl6/ModuleLoader.moarvm|__FILESIZE__(__RAKUDODIR__/blib/Perl6/ModuleLoader.moarvm)]--"
+};
+static const unsigned char Perl6_Ops[__FILESIZE__(__RAKUDODIR__/blib/Perl6/Ops.moarvm)] = {
+    "x<--[__RAKUDODIR__/blib/Perl6/Ops.moarvm|__FILESIZE__(__RAKUDODIR__/blib/Perl6/Ops.moarvm)]--"
+};
+static const unsigned char Perl6_Optimizer[__FILESIZE__(__RAKUDODIR__/blib/Perl6/Optimizer.moarvm)] = {
+    "x<--[__RAKUDODIR__/blib/Perl6/Optimizer.moarvm|__FILESIZE__(__RAKUDODIR__/blib/Perl6/Optimizer.moarvm)]--"
+};
+static const unsigned char Perl6_Pod[__FILESIZE__(__RAKUDODIR__/blib/Perl6/Pod.moarvm)] = {
+    "x<--[__RAKUDODIR__/blib/Perl6/Pod.moarvm|__FILESIZE__(__RAKUDODIR__/blib/Perl6/Pod.moarvm)]--"
+};
+static const unsigned char Perl6_World[__FILESIZE__(__RAKUDODIR__/blib/Perl6/World.moarvm)] = {
+    "x<--[__RAKUDODIR__/blib/Perl6/World.moarvm|__FILESIZE__(__RAKUDODIR__/blib/Perl6/World.moarvm)]--"
+};
 
 void librakudo_init(MoarAPI *api, MoarVM *vm) {
-    (void)api, (void)vm;
-#if 0
-   api->add_virtual_file(vm, "nqp.moarvm", nqp, sizeof nqp);
-#endif
+    api->add_virtual_file(vm, "perl6.moarvm", perl6, sizeof perl6);
+    api->add_virtual_file(vm, "perl6-debug.moarvm", perl6_debug, sizeof perl6_debug);
+    api->add_virtual_file(vm, "CORE.setting.moarvm", CORE_setting, sizeof CORE_setting);
+    api->add_virtual_file(vm, "RESTRICTED.setting.moarvm", RESTRICTED_setting, sizeof RESTRICTED_setting);
+    api->add_virtual_file(vm, "Perl6/Actions.moarvm", Perl6_Actions, sizeof Perl6_Actions);
+    api->add_virtual_file(vm, "Perl6/BOOTSTRAP.moarvm", Perl6_BOOTSTRAP, sizeof Perl6_BOOTSTRAP);
+    api->add_virtual_file(vm, "Perl6/Compiler.moarvm", Perl6_Compiler, sizeof Perl6_Compiler);
+    api->add_virtual_file(vm, "Perl6/Grammar.moarvm", Perl6_Grammar, sizeof Perl6_Grammar);
+    api->add_virtual_file(vm, "Perl6/Metamodel.moarvm", Perl6_Metamodel, sizeof Perl6_Metamodel);
+    api->add_virtual_file(vm, "Perl6/ModuleLoader.moarvm", Perl6_ModuleLoader, sizeof Perl6_ModuleLoader);
+    api->add_virtual_file(vm, "Perl6/Ops.moarvm", Perl6_Ops, sizeof Perl6_Ops);
+    api->add_virtual_file(vm, "Perl6/Optimizer.moarvm", Perl6_Optimizer, sizeof Perl6_Optimizer);
+    api->add_virtual_file(vm, "Perl6/Pod.moarvm", Perl6_Pod, sizeof Perl6_Pod);
+    api->add_virtual_file(vm, "Perl6/World.moarvm", Perl6_World, sizeof Perl6_World);
 }
 
 void librakudo_run(int argc, char **argv) {

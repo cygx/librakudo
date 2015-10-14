@@ -5,13 +5,20 @@ unit sub MAIN(
     *%reconfig);
 
 constant GENSCRIPT = q:to/END-OF-SCRIPT/;
-    print $*IN.slurp-rest.subst: :g, /__(\w+)__[\((<-[\)]>+)\)]?/, -> $/ {
-        given $0 {
+    sub expand-constant($/) {
+        given ~$0 {
             when 'MOARDLL' { #`<moardllpath> }
             when 'NQPDLL' { #`<nqpdllpath> }
-            when 'PATH' { #`<nqpdir> ~ "/$1" }
+            when 'NQPDIR' { #`<nqpdir> }
+            when 'RAKUDODIR' { #`<rakudodir> }
+            default { ~$/ }
+        }
+    }
+
+    sub expand-macro($/) {
+        given ~$0 {
             when 'FILESIZE' {
-                my $file = #`<nqpdir> ~ "/$1";
+                my $file = ~$1;
                 (try $file.IO.s) // do {
                     note "PANIC: could not determine size of $file";
                     exit 1;
@@ -20,6 +27,10 @@ constant GENSCRIPT = q:to/END-OF-SCRIPT/;
             default { ~$/ }
         }
     }
+
+    print $*IN.slurp-rest
+        . subst(:g, /__(\w+)__<![\(]>/, &expand-constant)
+        . subst(:g, /__(\w+)__\((<-[\)]>+)\)/, &expand-macro);
     END-OF-SCRIPT
 
 constant WIN32 = $*DISTRO.is-win;
@@ -77,7 +88,7 @@ spurt 'Makefile', slurp('build/Makefile.in')
 
 spurt 'gen.p6', GENSCRIPT.subst: :g, / '#`<' (\w+) '>' /, -> $/ {
     given $0 {
-        when any <nqpdir moardllpath nqpdllpath> {
+        when any <nqpdir rakudodir moardllpath nqpdllpath> {
             %config{$_}.subst(:g, '\\', '/').perl
         }
     }
