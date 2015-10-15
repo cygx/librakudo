@@ -1,1 +1,12 @@
-Nothing to see here, please move along.
+Build instructions:
+
+    $ perl6 configure.p6 --nqpdir=../nqp --rakudodir=../rakudo
+    $ make
+
+Running NQP:
+
+    $ MOARDLL=../moarvm/moar bin/nqp
+
+Running a broken Rakudo:
+
+    $ MOARDLL=../moarvm/moar NQPDLL=bin/nqp bin/rakudo
